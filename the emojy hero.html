@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+        .copy-button {
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Translator</h1>
+        <p>Type your text below and click "Translate" to see the emoji version!</p>
+        <textarea id="inputText" placeholder="Enter your text..."></textarea>
+        <button onclick="translateToEmoji()">Translate</button>
+        <div class="output" id="outputText"></div>
+        <button class="copy-button" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        const emojiDictionary = {
+            hello: "👋",
+            world: "🌍",
+            love: "❤️",
+            happy: "😊",
+            sad: "😢",
+            cat: "🐱",
+            dog: "🐶",
+            fire: "🔥",
+            cool: "😎",
+            star: "⭐",
+            food: "🍔",
+            drink: "🍹",
+            sun: "☀️",
+            moon: "🌙",
+            rain: "🌧️",
+            cloud: "☁️",
+            tree: "🌳",
+            flower: "🌸",
+            car: "🚗",
+            bike: "🚲",
+            airplane: "✈️",
+            train: "🚆",
+            rocket: "🚀",
+            smile: "😄",
+            wink: "😉",
+            cry: "😭",
+            laugh: "😂",
+            angry: "😡",
+            kiss: "😘",
+            heart: "💖",
+            thumbs: "👍",
+            clap: "👏",
+            ok: "👌",
+            coffee: "☕",
+            pizza: "🍕",
+            cake: "🍰",
+            icecream: "🍦",
+            music: "🎵",
+            movie: "🎬",
+            book: "📚",
+            pen: "✒️",
+            phone: "📱",
+            computer: "💻",
+            light: "💡",
+            gift: "🎁",
+            ball: "⚽",
+            medal: "🏅",
+            trophy: "🏆",
+            clock: "⏰",
+            money: "💰",
+            firework: "🎆",
+            flag: "🏳️",
+            party: "🎉",
+            banana: "🍌",
+            apple: "🍎",
+            orange: "🍊",
+            grapes: "🍇",
+            watermelon: "🍉",
+            strawberry: "🍓",
+            cherry: "🍒",
+            pineapple: "🍍",
+            mango: "🥭",
+            peach: "🍑",
+            lemon: "🍋",
+            avocado: "🥑",
+            carrot: "🥕",
+            broccoli: "🥦",
+            corn: "🌽",
+            chili: "🌶️",
+            bread: "🍞",
+            cheese: "🧀",
+            egg: "🥚",
+            burger: "🍔",
+            fries: "🍟",
+            sushi: "🍣",
+            spaghetti: "🍝",
+            salad: "🥗",
+            taco: "🌮",
+            burrito: "🌯",
+            donut: "🍩",
+            cookie: "🍪",
+            chocolate: "🍫",
+            popcorn: "🍿",
+            milk: "🥛",
+            wine: "🍷",
+            beer: "🍺",
+            cocktail: "🍸",
+            soda: "🥤",
+            tea: "🍵",
+            onion: "🧅",
+            garlic: "🧄",
+            potato: "🥔",
+            shrimp: "🍤",
+            fish: "🐟",
+            crab: "🦀",
+            octopus: "🐙",
+            chicken: "🐔",
+            cow: "🐄",
+            pig: "🐖",
+            sheep: "🐑",
+            goat: "🐐",
+            horse: "🐎",
+            elephant: "🐘",
+            monkey: "🐒",
+            rabbit: "🐇",
+            turtle: "🐢",
+            snake: "🐍",
+            bird: "🐦",
+            penguin: "🐧",
+            fish: "🐠",
+            dolphin: "🐬",
+            whale: "🐳",
+            frog: "🐸",
+            bear: "🐻",
+            panda: "🐼",
+            koala: "🐨",
+            tiger: "🐅",
+            lion: "🦁",
+            unicorn: "🦄",
+            dragon: "🐉",
+            cactus: "🌵",
+            palm: "🌴",
+            maple: "🍁",
+            clover: "☘️",
+            rose: "🌹",
+            hibiscus: "🌺",
+            sunflower: "🌻",
+            mountain: "⛰️",
+            beach: "🏖️",
+            desert: "🏜️",
+            volcano: "🌋",
+            earth: "🌎",
+            star: "🌟",
+            comet: "☄️",
+            sparkles: "✨",
+            rainbow: "🌈",
+            snowman: "☃️",
+            santa: "🎅",
+            balloon: "🎈",
+            confetti: "🎊",
+            diamond: "💎",
+            lock: "🔒",
+            key: "🔑",
+            hammer: "🔨",
+            wrench: "🔧",
+            scissors: "✂️",
+            knife: "🔪",
+            bulb: "💡",
+            magnet: "🧲",
+            compass: "🧭",
+            telescope: "🔭",
+            test: "🔬",
+            pill: "💊",
+            stethoscope: "🩺",
+            syringe: "💉",
+            ambulance: "🚑",
+            clock: "⏳",
+            backpack: "🎒",
+            luggage: "🧳",
+            tickets: "🎫",
+            compass: "🧭",
+            umbrella: "☂️",
+            candle: "🕯️",
+            axe: "🪓",
+            moneybag: "💰",
+            mail: "✉️",
+            anchor: "⚓",
+            wheelchair: "♿"
+        };
+
+        function translateToEmoji() {
+            const inputText = document.getElementById("inputText").value.toLowerCase().trim();
+            const words = inputText.split(/\s+/);
+            const translatedWords = words.map(word => emojiDictionary[word] || word);
+            const result = translatedWords.join(" ");
+            document.getElementById("outputText").innerText = result;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById("outputText").innerText;
+            if (outputText) {
+                navigator.clipboard.writeText(outputText).then(() => {
+                    alert("Copied to clipboard!");
+                }).catch(err => {
+                    alert("Failed to copy: " + err);
+                });
+            } else {
+                alert("Nothing to copy!");
+            }
+        }
+    </script>
+</body>
+</html>
